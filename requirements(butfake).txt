@@ -1,0 +1,22 @@
+List to shit to 'pip install (insert name here)'
+
+win32api (pywin32?)
+comtypes
+wheel
+
+
+Other things to do
+
+- How to open STK Desktop
+    1) Use comtypes or win32api
+    2) Irrelevant which one you use
+    3) win32api limited to windows
+    4) So use comtypes or python based api
+
+- Change Linter?
+    1) Ctrl+Shift+P
+    2) Search 'linter'
+    3) Select 'Python: Select Linter'
+    4) Click on 'mypy'
+    5) Somehow this works?
+
