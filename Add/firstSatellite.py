@@ -77,11 +77,12 @@ satellite.Propagator.Propagate()
     # satellite2.Propagator.Propagate()
     # print(name + ": done")
 
-Lat = 40.5215
-Lon = -74.4618
-Alt = -0.00104515
+# Rutgers Ground Station Coordinates
+Lat = 40.5215   # Latitude (deg)
+Lon = -74.4618   # Longitude (deg)
+Alt = -0.00104515   # Altitude (km)
 
-facility = root.CurrentScenario.Children.New(8, 'MyFacility')  # eFacility
+facility = root.CurrentScenario.Children.New(8, 'RUGS')  # eFacility
 # IAgFacility facility: Facility Object
 facility.Position.AssignGeodetic(Lat, Lon, Alt)  # Latitude, Longitude, Altitude
 
@@ -89,12 +90,33 @@ facility.Position.AssignGeodetic(Lat, Lon, Alt)  # Latitude, Longitude, Altitude
 facility.UseTerrain = True
 
 # Set altitude to a distance above the ground
-facility.HeightAboveGround = 0.01   # km
+facility.HeightAboveGround = 0.01   # km (height above the building)
 
 
-root.Rewind()
+# Replacing SOLIS because fuck those people at ASI
+
+# IAgSatellite satellite: Satellite object
+basic = satellite.Attitude.Basic
+basic.SetProfileType(1000000)  # eProfileSpinning
+basic.Profile.Body.AssignXYZ(0, 0, 1)
+basic.Profile.Inertial.AssignXYZ(0, 1, 0)
+basic.Profile.Rate = 6   # rev/sec
 
 
+
+# Add the sensor code here
+
+
+
+# Access code here
+
+# access = satellite.GetAccess('Facility/RUGS')   # Path must be 'ObjectType/ObjectName'
+# Compute access
+# access.ComputeAccess()
+
+# Put all access analysis here
+# accessConstraints = satellite.AccessConstraints
+# print(accessConstraints)
 
 # YOU NEED TO REWIND THE FUCKIN' SCENARIO TO SEE THE SATELLITE ASDFGHJKL;'
 root.Rewind()

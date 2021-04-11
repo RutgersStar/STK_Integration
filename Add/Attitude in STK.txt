@@ -1,0 +1,74 @@
+List of all the Atittude Profiles
+
+Location
+	Path > "C:\Users\miastra\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.8_qbz5n2kfra8p0\LocalCache\local-packages\Python38\site-packages\agi\stk12\stkobjects\stkobjects.py"
+	Line > 2202
+
+
+Uses
+	Replace SOLIS >:0
+	Might be slower to do it one-by-one, but its free so~
+
+
+Actual Code from the File
+
+class AgEVeProfile(IntEnum):
+    '''
+    Predefined attitude profiles.
+    '''
+    # Non-supported profile.
+    eProfileUnknown = -1,
+    # Aligned and Constrained attitude profile.
+    eProfileAlignedAndConstrained = 0,
+    # Central Body Fixed attitude profile.
+    eProfileCentralBodyFixed = 1,
+    # ECF Velocity Alignment with Nadir Constraint attitude profile.
+    eProfileECFVelocityAlignmentWithNadirConstraint = 2,
+    # ECF Velocity Alignment with Radial Constraint attitude profile.
+    eProfileECFVelocityAlignmentWithRadialConstraint = 3,
+    # ECI Velocity Alignment with Sun Constraint attitude profile.
+    eProfileECIVelocityAlignmentWithSunConstraint = 4,
+    # ECI Velocity Alignment with Nadir Constraint attitude profile.
+    eProfileECIVelocityAlignmentWithNadirConstraint = 5,
+    # Fixed in Axes attitude profile.
+    eProfileFixedInAxes = 6,
+    # Inertially Fixed attitude profile.
+    eProfileInertiallyFixed = 7,
+    # Nadir Alignment with ECF Velocity Constraint attitude profile.
+    eProfileNadirAlignmentWithECFVelocityConstraint = 8,
+    # Nadir Alignment with ECI Velocity Constraint attitude profile.
+    eProfileNadirAlignmentWithECIVelocityConstraint = 9,
+    # Nadir Alignment with Sun Constraint attitude profile.
+    eProfileNadirAlignmentWithSunConstraint = 10,
+    # Nadir Alignment with Orbit Normal Constraint attitude profile.
+    eProfileNadirAlignmentWithOrbitNormalConstraint = 11,
+    # Precessing Spin attitude profile.
+    eProfilePrecessingSpin = 12,
+    # Spin Aligned attitude profile.
+    eProfileSpinAligned = 13,
+    # Spin about Sun Vector attitude profile.
+    eProfileSpinAboutSunVector = 14,
+    # Spin about Nadir attitude profile.
+    eProfileSpinAboutNadir = 15,
+    # Spinning attitude profile.
+    eProfileSpinning = 16,
+    # Sun Alignmnent Occultation Normal Constraint attitude profile.
+    eProfileSunAlignmentOccultationNormalConstraint = 17,
+    # Sun Alignment with ECI Z Axis Constraint attitude profile.
+    eProfileSunAlignmentWithECIZAxisConstraint = 18,
+    # Sun Alignment with Z in Orbit Plane attitude profile.
+    eProfileSunAlignmentWithZInOrbitPlane = 19,
+    # Sun Alignment with Ecliptic Normal Constraint attitude profile.
+    eProfileSunAlignmentWithEclipticNormalConstraint = 20,
+    # Sun Alignment with Nadir Constraint attitude profile.
+    eProfileSunAlignmentWithNadirConstraint = 21,
+    # XPOP Inertial Attitude attitude profile.
+    eProfileXPOPInertialAttitude = 22,
+    # Yaw to Nadir attitude profile.
+    eProfileYawToNadir = 23,
+    # Coordinated Turn attitude profile.
+    eCoordinatedTurn = 24,
+    # GPS attitude profile.
+    eProfileGPS = 27,
+    # Aviator attitude profile.
+    eProfileAviator = 28
