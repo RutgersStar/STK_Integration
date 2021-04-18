@@ -1,3 +1,6 @@
+# Other libraries that might be useful
+import math
+
 # from win32api import GetSystemMetrics
 # import comtypes
 
@@ -27,7 +30,7 @@ root = stk.Root
 # from comtypes.gen import STKObjects
 
 root.NewScenario("Example_Scenario")
-variable = "SetAnalysisTimePeriod * \"Today\" \"+4 hours\""
+variable = "SetAnalysisTimePeriod * \"Today\" \"+24 hours\""
 root.ExecuteCommand(variable)
 # root.reWind()
 
@@ -77,6 +80,7 @@ satellite.Propagator.Propagate()
     # satellite2.Propagator.Propagate()
     # print(name + ": done")
 
+
 # Rutgers Ground Station Coordinates
 Lat = 40.5215   # Latitude (deg)
 Lon = -74.4618   # Longitude (deg)
@@ -97,16 +101,37 @@ facility.HeightAboveGround = 0.01   # km (height above the building)
 
 # IAgSatellite satellite: Satellite object
 basic = satellite.Attitude.Basic
-basic.SetProfileType(1000000)  # eProfileSpinning
+basic.SetProfileType(16)  # eProfileSpinning
 basic.Profile.Body.AssignXYZ(0, 0, 1)
 basic.Profile.Inertial.AssignXYZ(0, 1, 0)
 basic.Profile.Rate = 6   # rev/sec
 
 
-
 # Add the sensor code here
+sensor = facility.Children.New(20, 'MySensor')
 
+# IAgSensor sensor: Sensor object
+# Change pattern and set
+sensor.CommonTasks.SetPatternSimpleConic(90, 1)
+# Change pointing and set
+# sensor.CommonTasks.SetPointingFixedAzEl(90, 60, 1)  # eAzElAboutBoresightRotate
+# Change location and set
+sensor.SetLocationType(0)  # eSnFixed
+# sensor.LocationData.AssignCartesian(-.0004, -.0004, .004)
 
+constraintArray = sensor.AccessConstraints.AvailableConstraints()
+for i in range(0, len(constraintArray)):
+   print(constraintArray[i])
+
+range = sensor.AccessConstraints.AddConstraint(34) # Range is 34, more can be found by using the code above
+range.Min(0)
+range.Max(1000)
+
+# constraintArray = sensor.AvailableConstraints()
+
+# print('List of Available Constraints:')
+# for i in range(0, len(constraintArray)):
+#    print(constraintArray[i])
 
 # Access code here
 
@@ -118,8 +143,9 @@ basic.Profile.Rate = 6   # rev/sec
 # accessConstraints = satellite.AccessConstraints
 # print(accessConstraints)
 
-# YOU NEED TO REWIND THE FUCKIN' SCENARIO TO SEE THE SATELLITE ASDFGHJKL;'
+
+# YOU NEED TO REWIND THE FUCKIN' SCENARIO TO SEE THE SATELLITEs ASDFGHJKL;'
 root.Rewind()
 
 
-off = input('Press enter to end')
+off = input('Press enter to kill STK')
