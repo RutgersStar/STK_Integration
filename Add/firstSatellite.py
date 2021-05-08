@@ -1,4 +1,4 @@
-# Other libraries that might be useful
+# Libraries that might be useful
 import math
 
 # from win32api import GetSystemMetrics
@@ -12,7 +12,7 @@ import math
 # root = uiApplication.Personality2
 
 # Start new instance of STK using the new API
-from agi.stk12.stkdesktop import STKDesktop
+from agi.stk12.stkdesktop import STKDesktop # Update this line
 stk = STKDesktop.StartApplication(visible=True)
 root = stk.Root
 
@@ -33,6 +33,9 @@ root.NewScenario("Example_Scenario")
 variable = "SetAnalysisTimePeriod * \"Today\" \"+24 hours\""
 root.ExecuteCommand(variable)
 # root.reWind()
+
+
+# Satellite Code
 
 # IAgStkObjectRoot root: STK Object Model Root
 satellite = root.CurrentScenario.Children.New(18, 'MySatellite')  # eSatellite
@@ -81,6 +84,19 @@ satellite.Propagator.Propagate()
     # print(name + ": done")
 
 
+# SOLIS Code
+
+# Because fuck those guys I don't have 45k$ for you >:0
+# IAgSatellite satellite: Satellite object
+basic = satellite.Attitude.Basic
+basic.SetProfileType(16)  # eProfileSpinning
+basic.Profile.Body.AssignXYZ(0, 0, 1)
+basic.Profile.Inertial.AssignXYZ(0, 1, 0)
+basic.Profile.Rate = 6   # rev/sec
+
+
+# Facility Code
+
 # Rutgers Ground Station Coordinates
 Lat = 40.5215   # Latitude (deg)
 Lon = -74.4618   # Longitude (deg)
@@ -97,55 +113,53 @@ facility.UseTerrain = True
 facility.HeightAboveGround = 0.01   # km (height above the building)
 
 
-# Replacing SOLIS because fuck those people at ASI
-
-# IAgSatellite satellite: Satellite object
-basic = satellite.Attitude.Basic
-basic.SetProfileType(16)  # eProfileSpinning
-basic.Profile.Body.AssignXYZ(0, 0, 1)
-basic.Profile.Inertial.AssignXYZ(0, 1, 0)
-basic.Profile.Rate = 6   # rev/sec
-
-
-# Add the sensor code here
+# Sensor Code
 sensor = facility.Children.New(20, 'MySensor')
 
 # IAgSensor sensor: Sensor object
 # Change pattern and set
 sensor.CommonTasks.SetPatternSimpleConic(90, 1)
-# Change pointing and set
-# sensor.CommonTasks.SetPointingFixedAzEl(90, 60, 1)  # eAzElAboutBoresightRotate
-# Change location and set
-sensor.SetLocationType(0)  # eSnFixed
-# sensor.LocationData.AssignCartesian(-.0004, -.0004, .004)
 
-constraintArray = sensor.AccessConstraints.AvailableConstraints()
-for i in range(0, len(constraintArray)):
-   print(constraintArray[i])
+# Runs smoother if you do this?
+root.BeginUpdate()
 
-range = sensor.AccessConstraints.AddConstraint(34) # Range is 34, more can be found by using the code above
-range.Min(0)
-range.Max(1000)
+# Adding a range constraint 
+range1 = sensor.AccessConstraints.AddConstraint(34) # Range is 34, more can be found by using the code above
+range1.EnableMin = True
+range1.EnableMax = True
+range1.Min = 0
+range1.Max = 1000
 
-# constraintArray = sensor.AvailableConstraints()
+# Adding an angle of elevation constraint
+# angle_s = sensor.AccessConstraints.AddConstraint(14)
+# angle_s.EnableMin = True
+# angle_s.EnableMax = True
+# angle_s.Min = 0
+# angle_s.Max = 90
 
-# print('List of Available Constraints:')
-# for i in range(0, len(constraintArray)):
-#    print(constraintArray[i])
+# Runs smoother if you do this!
+root.EndUpdate()
 
-# Access code here
 
-# access = satellite.GetAccess('Facility/RUGS')   # Path must be 'ObjectType/ObjectName'
-# Compute access
-# access.ComputeAccess()
+# Access Code
 
-# Put all access analysis here
-# accessConstraints = satellite.AccessConstraints
-# print(accessConstraints)
+# Compute Access
+access = satellite.GetAccessToObject(sensor)
+access.ComputeAccess()
+
+# Getting information from access
+intervalCollection = access.ComputedAccessIntervalTimes
+computedIntervals = intervalCollection.ToArray(0,-1)
+access.SpecifyAccessIntervals(computedIntervals)
+
+# Displaying that information
+print(computedIntervals)
+print()
+print(len(computedIntervals))
 
 
 # YOU NEED TO REWIND THE FUCKIN' SCENARIO TO SEE THE SATELLITEs ASDFGHJKL;'
 root.Rewind()
 
-
+# Killing STK
 off = input('Press enter to kill STK')
